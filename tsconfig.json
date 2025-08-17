@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Atualizado para suportar recursos mais modernos do JavaScript
+    "module": "CommonJS", // Mantido para compatibilidade com Node.js
+    "outDir": "./dist", // Diretório onde os arquivos compilados serão gerados
+    "rootDir": ".", // Diretório raiz do código TypeScript
+    "strict": true, // Ativa verificações rigorosas de TypeScript
+    "esModuleInterop": true, // Garante compatibilidade com exportações padrão em CommonJS
+    "skipLibCheck": true, // Ignora verificações de tipos em arquivos de biblioteca
+    "resolveJsonModule": true, // Permite importar arquivos JSON
+    "moduleResolution": "node", // Garante a resolução de módulos como o Node.js
+    "types": ["node"], // Garante que os tipos do Node.js sejam carregados
+    "typeRoots": ["./node_modules/@types"], // Garante o uso de tipos instalados no projeto
+    "forceConsistentCasingInFileNames": true // Garante consistência no uso de letras maiúsculas/minúsculas em nomes de arquivos
+  },
+  "include": ["**/*.ts"], // Inclui todos os arquivos TypeScript no projeto
+  "exclude": ["node_modules", "dist"] // Exclui arquivos que não precisam ser compilados
+}
