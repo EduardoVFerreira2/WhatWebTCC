@@ -29,6 +29,7 @@ const EventType = {
   MESSAGE_ACK: 6,
   CHANGE_STATE: 7,
   DISCONNECTED: 8,
+  TIME_OUT: 9,
 };
 
 const vWhatsWeb = []; // Array para armazenar as instâncias de Client
@@ -175,6 +176,7 @@ function createWhatsAppClient(conta_id) {
   });
 
   client.on("disconnected", (reason) => {
+    console.log("---------------------DESCONECTADO: ", reason);
     enviarEventoApi(conta_id, EventType.DISCONNECTED, { body: reason });
   });
 
