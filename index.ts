@@ -273,6 +273,12 @@ async function createWhatsAppClient(conta_id: string) {
       if (idx !== -1) vListaContasMemoria[idx].pronto = true
       enviarEventoApi(conta_id, EventType.READY, {})
     } else if (qr) {
+      // Armazenar o QR Code no cliente para acesso via endpoint
+      const idx = vListaContasMemoria.findIndex((c) => c.conta_id === conta_id)
+      if (idx !== -1) {
+        vListaContasMemoria[idx].ultimoQr = qr
+      }
+      
       enviarEventoApi(conta_id, EventType.QR, { body: qr })
     }
   })
@@ -616,6 +622,30 @@ app.get("/ping", (req, res) => {
   }
 
   res.send(vRetorno)
+})
+
+// Endpoint para buscar último QR Code gerado
+app.get("/qr/:contaId", (req, res) => {
+  const contaId = req.params.contaId
+  const cliente = vListaContasMemoria.find(c => c.conta_id === contaId)
+  
+  if (!cliente) {
+    return res.status(404).send({ cod: 1, msg: "Conta não encontrada" })
+  }
+  
+  if (cliente.ultimoQr) {
+    return res.status(200).send({ 
+      cod: 0, 
+      qr: cliente.ultimoQr,
+      status: cliente.pronto ? 'conectado' : 'aguardando_qr'
+    })
+  } else {
+    return res.status(404).send({ 
+      cod: 1, 
+      msg: "QR Code não disponível. Inicie a conexão primeiro.",
+      status: cliente.pronto ? 'conectado' : 'sem_qr'
+    })
+  }
 })
 
 app.post("/send", async (req, res) => {

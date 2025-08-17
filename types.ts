@@ -24,6 +24,7 @@ export interface WhatsAppClient {
   conta_id: string
   client: WASocket
   pronto: boolean
+  ultimoQr?: string
 }
 
 export interface ResponseData {
