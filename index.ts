@@ -268,9 +268,9 @@ async function createWhatsAppClient(conta_id: string) {
         const celular = sock.user?.id.split(":")[0];
 
         await api.post("WhatsAppConta/AtualizarConta", {
-          id: conta_id,
-          telefone: celular,
-          foto: profile,
+          Id: conta_id,
+          Telefone: celular,
+          Foto: profile,
         });
       } catch (error) {
         console.error("Erro ao obter informações do perfil:", error);
@@ -279,17 +279,13 @@ async function createWhatsAppClient(conta_id: string) {
       if (idx !== -1) vListaContasMemoria[idx].pronto = true;
       enviarEventoApi(conta_id, EventType.READY, {});
     } else if (qr) {
-<<<<<<< HEAD
       // Armazenar o QR Code no cliente para acesso via endpoint
-      const idx = vListaContasMemoria.findIndex((c) => c.conta_id === conta_id)
+      const idx = vListaContasMemoria.findIndex((c) => c.conta_id === conta_id);
       if (idx !== -1) {
-        vListaContasMemoria[idx].ultimoQr = qr
+        vListaContasMemoria[idx].ultimoQr = qr;
       }
-      
-      enviarEventoApi(conta_id, EventType.QR, { body: qr })
-=======
+
       enviarEventoApi(conta_id, EventType.QR, { body: qr });
->>>>>>> fd73fe815853eb1ecbb8cd84146b4988b50a4290
     }
   });
 
@@ -643,27 +639,27 @@ app.get("/ping", (req, res) => {
 
 // Endpoint para buscar último QR Code gerado
 app.get("/qr/:contaId", (req, res) => {
-  const contaId = req.params.contaId
-  const cliente = vListaContasMemoria.find(c => c.conta_id === contaId)
-  
+  const contaId = req.params.contaId;
+  const cliente = vListaContasMemoria.find((c) => c.conta_id === contaId);
+
   if (!cliente) {
-    return res.status(404).send({ cod: 1, msg: "Conta não encontrada" })
+    return res.status(404).send({ cod: 1, msg: "Conta não encontrada" });
   }
-  
+
   if (cliente.ultimoQr) {
-    return res.status(200).send({ 
-      cod: 0, 
+    return res.status(200).send({
+      cod: 0,
       qr: cliente.ultimoQr,
-      status: cliente.pronto ? 'conectado' : 'aguardando_qr'
-    })
+      status: cliente.pronto ? "conectado" : "aguardando_qr",
+    });
   } else {
-    return res.status(404).send({ 
-      cod: 1, 
+    return res.status(404).send({
+      cod: 1,
       msg: "QR Code não disponível. Inicie a conexão primeiro.",
-      status: cliente.pronto ? 'conectado' : 'sem_qr'
-    })
+      status: cliente.pronto ? "conectado" : "sem_qr",
+    });
   }
-})
+});
 
 app.post("/send", async (req, res) => {
   const vRetorno: ResponseData = { cod: 0, msg: "" };
